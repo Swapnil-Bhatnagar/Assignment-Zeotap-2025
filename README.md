@@ -1,150 +1,85 @@
-# 🌦️ Real-Time Weather Monitoring System
+Real-Time Weather Data Monitoring System
+This system continuously tracks, analyzes, and visualizes weather data in real-time using the OpenWeatherMap API. Built with Java, Spring Boot, and MySQL, it provides summarized insights, forecast updates, and custom alerts, packaged in a Dockerized environment for easy deployment.
 
-This Real-Time Weather Monitoring System is designed to track, analyze, and visualize real-time weather data using the OpenWeatherMap API. Built with Java, Spring Boot, and MySQL, this project offers a dashboard for historical trends, current conditions, weather forecasts, and custom alerts. It includes a responsive UI and powerful backend logic, all packaged in a Dockerized environment for easy deployment.
+Project Overview
+Our Real-Time Weather Monitoring System functions as a dynamic data processing engine:
 
-## 📝 Note to Reviewer:
+Data Source: Fetches live weather data from OpenWeatherMap API at a configurable interval (e.g., every 5 minutes).
+Rollups and Aggregates: Aggregates daily weather metrics, stores summaries, and provides insights through a user interface.
+Alerts: Custom, threshold-based alerts are triggered when specific conditions are met.
+Key Features
+Real-Time Data Retrieval: Continuously calls the OpenWeatherMap API to retrieve real-time weather data for major cities across India (Delhi, Mumbai, Chennai, Bangalore, Kolkata, and Hyderabad).
+Temperature Conversion: Converts temperatures from Kelvin to Celsius (user preferences can be added for Fahrenheit).
+Daily Summaries: Aggregates daily values, including average, maximum, and minimum temperatures, with a calculated dominant weather condition.
+Custom Alerts: User-defined thresholds for critical conditions, such as high temperatures or specific weather events, trigger alerts.
+Data Visualization: Displays trends via charts using Thymeleaf and Bootstrap.
+Dockerized Deployment: Containerized with Docker for scalable deployment.
+Email Alerts: Configurable email alerts to notify users of threshold breaches.
+Technology Stack
+Backend: Java, Spring Boot, REST APIs, Spring Security
+Database: MySQL for data persistence
+Frontend: Thymeleaf, Bootstrap, CSS
+Data Source: OpenWeatherMap API
+Visualization: Thymeleaf for data visualization
+Containerization: Docker, Docker Compose
+Monitoring: Chart.js for trend visualization
+Setup & Run Instructions
+Prerequisites
+Ensure the following are installed on your system:
 
-The OpenWeather API provides a free tier that allows us to retrieve only real-time weather data and forecast information. Unfortunately, it does not support fetching historical weather data with a free API key.
+JDK 21 or later
+Docker and Docker Compose
+MySQL
+Maven (for building the project)
+IntelliJ IDEA
+Local Deployment (Recommended for Development)
+Clone the Repository:
 
-To overcome this limitation, our application calculates **daily summaries** based on the **real-time weather data** collected every 5 minutes. The application fetches this data and stores it in the database. These stored entries are then used to generate both **daily summaries** and **historical data**.
+bash
+Copy code
+git clone https://github.com/yourusername/weather-monitoring-system.git
+cd weather-monitoring-system
+Configure Database:
 
-Upon initial startup, the dashboard may show limited results, as it relies on real-time data being fetched. However, after the application runs continuously for **1-2 hours** or more, it will collect enough weather data, allowing the dashboard to update dynamically with more comprehensive **daily summaries** and **historical trends**, reflecting real-time conditions accurately.
+Ensure MySQL is running and create a new database:
+sql
+Copy code
+CREATE DATABASE weather_monitoring;
+Update application.properties with your MySQL credentials.
+Build and Run the Application:
 
-This design ensures that the application functions as a **robust real-time weather monitoring system**, despite the API's limitations on historical data retrieval.
-
----
-
-## 🚀 Features
-- **Real-Time Weather Data:** Fetches live weather data from OpenWeatherMap API.
-- **Daily Summaries:** Aggregates daily weather data, including max/min temperatures, humidity, and wind speed.
-- **Weather Forecasts:** Provides accurate 5-day forecasts for selected cities.
-- **Custom Alerts:** Triggers alerts when temperature, wind speed, or humidity exceeds thresholds.
-- **Visualizations:** Displays trends via charts (temperature, humidity, and wind speed) using Thymeleaf and Bootstrap.
-- **REST APIs:** Well-documented endpoints for integration with external services.
-- **Email Alerts:** Sends notifications via email for significant weather changes.
-
-## 🛠️ Technology Stack
-- **Backend:** Java, Spring Boot, Spring Security, REST APIs
-- **Database:** MySQL, MySQL Workbench.
-- **Frontend:** Thymeleaf, Bootstrap, CSS
-- **Data Source:** OpenWeatherMap API
-- **Visualization:**  Thymeleaf (for data visualization)
-- **Containerization:** Docker, Docker Compose
-- **Monitoring:** Chart.js
-
-## 📦 Prerequisites
-To run this project locally, ensure you have the following installed:
-- JDK 21 or later (Strong Requirement)
-- Docker and Docker Compose
-- MySQL 
-- Maven (to build the project)
-- IntelliJ IDEA
-
-## ⚙️ Setup & Run
-Follow these steps to set up and run the application:
-
-### 1. Clone the Repository (Recommended to Download Zip)
-```bash
-    git clone https://github.com/yourusername/weather-monitoring-system.git
-    cd weather-monitoring-system
-```
-
-## For Running application locally using Mysql .(Recommended)
-   
-### 2. Setup Databse Configuration.
-  - Ensure MySQL is installed and running.
-  - Create a new database name rule_engine_db in MySQL.
-  ```bash
-    CREATE DATABASE weather_monitoring;
-  ```
- ### 3. Configure application.properties :
-   - Update the src/main/resources/application.properties file with your MySQL configuration:
-   ```bash
-     spring.datasource.url=jdbc:mysql://localhost:3306/weather_monitoring
-     spring.datasource.username=your_username
-     spring.datasource.password=your_password
-   ```
-### 4. Build project. 
-  - Use Maven (use Intellij Maven terminal) to clean and package project
-  ```bash
-    mvn clean package
-```
-  - After building start application ( You can also run main springboot app file)
-```bash
-   mvn spring-boot:run
-```
-
-## For Running application using docker-compose file. (Optional)
-- No need to create database 
-- Just build  New Connection in MYSQL workbench. 
-- Use username: rohan
-- Use password: rohan
-- Use Port No: 3308 
-- Just Change Configuration for root password in docker-compose file.
-```bash
-MYSQL_ROOT_PASSWORD: your_root_password.
-```
- a. Build Application
-```bash
-mvn clean install
+Use Maven to clean and package the project:
+bash
+Copy code
 mvn clean package
-```
-b. Run with Docker Compose.
-```bash
+Start the Spring Boot application:
+bash
+Copy code
+mvn spring-boot:run
+Access the Dashboard:
+
+Access the dashboard at http://localhost:8080/dashboard/dailySummary and other endpoints for different insights.
+Dockerized Deployment (Optional for Production)
+Database Setup:
+Create a new MySQL connection using the Docker configuration.
+Run the Application:
+Use Docker Compose to build and run:
+bash
+Copy code
 docker-compose up
-```
-
-### 5. Access the Dashboard (Make sure port 8080 is free)
-   - Once the application is running, you can access the weather monitoring dashboard by visiting:
-     ```bash
-        http://localhost:8080/dashboard/dailySummary
-        http://localhost:8080/dashboard/weatherForecast
-        http://localhost:8080/dashboard/historicalData
-     ```
-
-## 📋 API Endpoints (Use POSTMAN to test )
-The following REST APIs are available:
-- [API Documentaion Link](https://documenter.getpostman.com/view/39266668/2sAY4si3rh)
-  
-1. **Daily Summaries**
-   - `GET /weather/dailySummary?cdate={date}`
-   - Returns the daily summary for the city and date.
-
-2. **Fetch Weather Forecast**
-   - `GET /weather/forecast?city={city}`
-   - Returns the 5-day forecast for the selected city.
-
-3. **Fetch History Data**
-   - `GET /api/weather/historyData?city={city}&date={date}`
-   - Returns weather data for a specific city and date. 
-
-
-## 📊 Dashboard & Visualizations
-- **Weather Data Trends:** Line charts for temperature, humidity, and wind speed.
-- **Weather Forecast:** Displays a 5-day forecast with weather icons and descriptions.
-- **Daily Summary** Daily Summary of weather data on the basis of date.
-
-## ✅ Test Cases
-Comprehensive test cases have been implemented to cover the following:
-- **Weather Data Retrieval:** Verifying correct data parsing and storage.
-- **Threshold Alerts:** Testing the accuracy of custom weather alerts.
-- **Forecast Data:** Ensuring reliable 5-day forecast fetching.
-- **Edge Cases:** Handling null data, API errors, and more.
-
-## 🚀 Additional Features (Bonus)
-- **Email Alerts:** Sends email notifications for critical weather conditions.
-- **Additional Paramters:** Wind Speed , Humidity added in project.
-
-## 🏆 Achievements & Performance
-- 20% Reduction in Processing Time for managing and retrieving data.
-- Efficient Data Aggregation: Optimized real-time data storage by updating summaries every 5 minutes.
-
-## 📚 Documentation
-- [Detailed Documentation](https://drive.google.com/file/d/18Ghua5EUKi94J6of5vnqhDqdy1X68762/view?usp=sharing)
-
-
-## 📬 Contact
-For any inquiries, feel free to reach out to me:
-
-**Rohan Chintalwar**  
-Email: [rohanchintalwar27@gmail.com](mailto:rohanchintalwar27@gmail.com)
+API Endpoints (Test with Postman)
+Daily Summaries: GET /weather/dailySummary?date={date}
+Weather Forecast: GET /weather/forecast?city={city}
+Historical Data: GET /weather/historyData?city={city}&date={date}
+Key Components
+Daily Rollups: Calculates daily averages, max/min temperatures, and dominant weather conditions.
+Alert Monitoring: Triggers alerts based on threshold breaches for temperature and weather conditions.
+Test Cases
+System Initialization: Verifies system connection to the OpenWeatherMap API.
+Data Retrieval: Simulates data fetches at regular intervals and validates correct parsing.
+Temperature Conversion: Tests Kelvin-to-Celsius conversion.
+Daily Aggregates: Simulates several days of data to verify aggregate accuracy.
+Threshold Alerts: Tests alert functionality for conditions such as high temperatures.
+Additional Features
+Extended Parameters: Additional weather parameters like humidity and wind speed are included.
+Email Notifications: Alerts are sent via email for significant weather events.
